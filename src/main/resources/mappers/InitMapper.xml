@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.longi.dap.dao.InitDaoMapper">
+
+    <resultMap id="capResultMap" type="com.longi.dap.entity.CapacityEntity">
+        <result column="city" jdbcType="VARCHAR" property="city" />
+        <result column="capacity" jdbcType="DOUBLE" property="capacity" />
+        <result column="type" jdbcType="VARCHAR" property="type" />
+    </resultMap>
+    <resultMap id="mktResultMap" type="com.longi.dap.entity.CapacityEntity">
+        <result column="country" jdbcType="VARCHAR" property="country" />
+        <result column="total" jdbcType="DOUBLE" property="total" />
+        <result column="ours" jdbcType="VARCHAR" property="ours" />
+        <result column="rate" jdbcType="DOUBLE" property="rate" />
+    </resultMap>
+
+    <!--查询产能信息-->
+    <select id="getCapacityData" resultType="com.longi.dap.entity.CapacityEntity">
+        SELECT t.city,t.capacity,t.`type` FROM capacity t where 1=1
+        <if test="typeName != null">
+         and t.type = #{typeName}
+         </if>
+    </select>
+
+    <!--查询产能信息-->
+    <select id="getMarketShareData" resultType="com.longi.dap.entity.MarketShareEntity">
+        SELECT t.country,t.total,t.ours,t.rate FROM market_share t
+    </select>
+
+
+</mapper>

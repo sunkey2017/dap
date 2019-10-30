@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./css/common.css" >
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>Longi-BI</title>
+</head>
+<body>
+<!--顶部-->
+<header class="header left">
+    <div class="left nav nav_longi" >
+        <img src="./images/logor.png">
+    </div>
+    <div class="header_center left" style="position:relative">
+
+        <h2><strong>大数据展示</strong></h2>
+
+    </div>
+    <div class="right nav text_left">
+        <ul>
+            <li ><i class="nav_1"></i><a href="javascript:void(0)" onclick="toPage('index')">驾驶舱</a> </li>
+            <li class="nav_active"><i class="nav_2"></i><a href="javascript:void(0)" onclick="toPage('production')">生产视图</a> </li>
+        </ul>
+    </div>
+
+</header>
+<!--内容部分-->
+<div class="con left">
+    <!--数据总概-->
+
+    <!--统计分析图-->
+    <div class="div_any_1">
+        <div class="left div_any01">
+            <div class="div_any_child02">
+                <div class="div_any_title"><img src="./images/title_1.png">订单完成率</div>
+                <p id="orderChart" class="p_chart_lt03"></p>
+            </div>
+            <div class="div_any_child02">
+                <div class="div_any_title"><img src="./images/title_2.png">月成本产出</div>
+                <p id="histogramChart" class="p_chart_lt02"></p>
+            </div>
+        </div>
+        <div class="div_any02 left">
+            <div class="div_mid_child middle_div_height">
+                <div class="div_any_title any_title_width"><img src="./images/title_0.png">在制品情况 </div>
+                <div id="wipChart" style="width:97.5%;height:95%;display: inline-block;padding-left: 1.25%;padding-top:2.2%"></div>
+            </div>
+
+            <div class="div_mid_child middle_div_mid_height">
+                <div class="div_any_title any_title_width"><img src="./images/title_0.png">成品率 </div>
+                <div id="yieldChart" style="width:97.5%;height:95%;display: inline-block;padding-left: 1.25%;padding-top:2.2%"></div>
+            </div>
+
+            <div class="div_any_child middle_bottom_div_height">
+                <div class="div_any_title any_title_width"><img src="./images/title_0.png">质量&警报 </div>
+                <div id="qualityChart" style="width:48.5%;height:95%;display: inline-block;padding-left: 1%;padding-top:1%"></div>
+                <div id="alarmChart" style="width:48%;height:95%;display: inline-block;padding-left: 1%;padding-top:1%"></div>
+            </div>
+        </div>
+
+
+        <div class="right div_any01">
+            <div class="div_left_child div_left_child_ht1">
+                <div class="div_any_title"><img src="./images/title_3.png">平均工时产出</div>
+                <p id="CompanyAgeChart" class="p_chart_lt04"></p>
+            </div>
+            <div class="div_left_child div_left_child_ht2">
+                <div class="div_any_title"><img src="./images/title_3.png">西安组件职人员学历分布</div>
+                <p id="onJobChart" class="p_chart_lt01"></p>
+            </div>
+            <div class="div_left_child div_left_child_ht3">
+                <div class="div_any_title"><img src="./images/title_4.png">人员花费情况</div>
+                <p id="chargeChart" class="p_chart_lt04"></p>
+            </div>
+        </div>
+
+
+    </div>
+    </div>
+
+</div>
+
+<script data-main="js/productionMain" src="js/require.js"></script>
+</body>
+</html>

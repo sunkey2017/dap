@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据可视化demo</title>
+    <link href="../css/common.css" rel="stylesheet">
+    <script type="text/javascript" src="js/common.js"></script>
+</head>
+<body>
+<!--顶部-->
+<header class="header left">
+  <div class="left nav nav_longi">
+      <img src="../images/logor.png">
+  </div>
+    <div class="header_center left" style="position:relative">
+  
+        <h2><strong>大数据展示</strong></h2>
+
+    </div>
+    <div class="right nav text_left">
+        <ul>
+			<li><i class="nav_1"></i><a href="javascript:void(0)" onclick="toPage('index')">采集概况</a> </li>
+            <li><i class="nav_2"></i><a href="javascript:void(0)" onclick="toPage('finance')">财务数据分析</a> </li>
+            <li class="nav_active"><i class="nav_3"></i><a href="javascript:void(0)" onclick="toPage('personnel')">人事数据分析</a> </li>
+        </ul>
+    </div>
+
+</header>
+<!--内容部分-->
+<div class="con left" style="width:50%;">
+    <!--统计分析图-->
+    <div class="div_any">
+        <div class="left div_any01" style="width:100%;">
+            <div class="div_any_child" style="width:98%;position:relative;height: 420px;">
+                <div class="div_any_title"><img src="../images/title_13.png">主要传染病</div>
+                <div id="histogramChart1"  style="width: 45%;display: inline-block;height: 400px;margin-top: 15px;"></div>
+                <div id="lineChart1"  style="width: 52%;height: 400px;display: inline-block;"></div>
+
+            </div>
+        </div>
+        <div class="left div_any01" style="width:48%;">
+          <div class="div_any_child" style="height: 420px;">
+              <div class="div_any_title"><img src="../images/title_14.png">主要症状</div>
+              <p id="histogramChart2" class="p_chart" style="height: 400px;"></p>
+
+          </div>
+        </div>
+          <div class="left div_table_box" style="width: 48%;">
+              <div class="div_any_child" style="height: 420px;">
+                  <div class="div_any_title"><img src="../images/title_16.png">预警信息</div>
+                  <div class="table_p">
+
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+<div class="con right" style="width:50%;">
+  <div class="div_any">
+      <div class="left div_any01" style="width:100%;">
+          <div class="div_any_child" style="width:98%;position:relative;height: 420px;">
+              <div class="div_any_title"><img src="../images/title_17.png">主要疾病排行</div>
+              <div id="histogramChart3"  style="width: 45%;display: inline-block;height: 400px;margin-top: 15px;"></div>
+              <div id="lineChart2"  style="width: 52%;height: 90%;display: inline-block;"></div>
+          </div>
+      </div>
+      <div class="left div_any01" style="width:48%;">
+        <div class="div_any_child" style="height: 420px;">
+            <div class="div_any_title"><img src="../images/title_18.png">年龄分布</div>
+            <p id="pieChart1" class="p_chart" style="height: 400px;"></p>
+        </div>
+      </div>
+      <div class="right div_any01" style="width:48%;">
+          <div class="div_any_child" style="height: 420px;">
+              <div class="div_any_title"><img src="../images/title_19.png">性别分布</div>
+              <p id="pieChart2" class="p_chart" style="height: 400px;"></p>
+          </div>
+      </div>
+  </div>
+</div>
+<script data-main="js/main2" src="js/require.js"></script>
+</body>
+</html>

@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.ShipmentsMapper">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.Shipments">
+        <result column="companyname" property="company" jdbcType="VARCHAR"/>
+        <result column="market" property="market" jdbcType="VARCHAR"/>
+        <result column="mount" property="mount" jdbcType="VARCHAR"/>
+        <result column="year" property="year" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--auto generated Code-->
+    <sql id="Base_Column_List">
+        companyname,
+        market,
+        mount
+    </sql>
+    <select id="selectIndustryInformationPrice" resultType="map">
+      select *from 3rd_price;
+    </select>
+    
+    <select id="selectWorkingOutput" resultType="map">
+      select ROUND(day_out,0) as output,time from work_time;
+    </select>
+
+    <select id="selectMarketData" resultType="map">
+        select rank,company,mount,concat(market,year,type) name from shipments_target;
+    </select>
+
+    <select id="selectfinishproduct" resultType="map">
+        select * from finished_rate;
+    </select>
+    
+    <select id="selectBomPrice" resultType="map">
+        select short_name, ROUND(JAN,2) AS JAN ,  ROUND(FEB,2) AS FEB,  ROUND(MAR,2) AS MAR , ROUND(APR,2) AS APR, ROUND(average,2) AS average from materiel_detail_price;
+    </select>
+    <select id="selectTripBudget" resultType="map">
+      select * from fee_analyse3 ;
+    </select>
+
+    <select id="selectAggregateAmount" resultType="map">
+       select type ,ROUND(money,2) as money from total_stock_money order by type;
+    </select>
+    <select id="selectAggregatebyMonth" resultType="map">
+        select month, group_concat(sumbymonth) sumbymonth from(select month, ROUND(group_concat(summoney),2) as  sumbymonth,type from (select type, month,sum(money) as summoney from   point_stock_money  group by month,type order by month) tt group by month ,type  order by type) ts group by month;
+    </select>
+
+    <select id="selectEmpDetail" resultType="map">
+     select count(*) as count,ceil(com_age) age from emp_detail where status='在职' and length(com_age)>0 group by ceil(com_age);
+
+    </select>
+    <select id="selectFormalSchooling" resultType="map">
+        select count(*) as count ,education from emp_detail where status='在职' and length(education)>0 group by education;
+    </select>
+    <select id="selectWeeklyNg" resultType="map">
+        
+        select * from weekly_ng_info order by ng_cnt desc limit 10;
+    </select>
+    <select id="alarmInfo" resultType="map">
+
+        select * from alarm_info order by alarm_cnt desc limit 10;
+    </select>
+
+    <select id="selectwip" resultType="map" useCache="false" flushCache="true">
+      select * from wip_info;
+    </select>
+    
+    <select id="selectsummaryout" resultType="map">
+        select month,sum(cost)/1000000 as summary,sum(out_put)/1000000  as outsummary from cost_output group by month order by month;
+    </select>
+
+    <select id="selectSinglecrystal" resultType="com.longi.dap.entity.Shipments">
+
+        select a.id,a.company,b.mount from  company a left join (select  ct.company, ifnull(sum(st.mount),0)  as mount from company ct left join shipments_target st on ct.company = st.company
+        and  year =#{year}
+        and type = #{singlecrystal}
+        group by ct.company ) b
+        on a.company =b.company
+
+    </select>
+
+    <select id="selectAllCompany"  resultType="com.longi.dap.entity.Shipments">
+
+        select company from company order  by  id;
+    </select>
+    
+    
+    <select id="selectordermap" resultType="map">
+        select t.sale_order,ROUND(a_sum/in_sum,2)*100 as hit_rate,ROUND(in_sum/sale_need,2)*100 as finished_rate from(
+        select  o.sale_order,sum(warehouse_in_count) as in_sum,sum(a_count) as a_sum from order_map o
+        left join work_order_finished w
+        on o.work_order=w.work_order
+        group by o.sale_order) t
+        left join sale_order_info s
+        on t.sale_order=s.sale_order;
+      </select>
+
+
+    <select id="selectEurope"  resultType="com.longi.dap.entity.Shipments">
+    select   cc.company as company ,ifnull(tt.aa,0) as mount from company as cc left join (select cp.company,max(mount) as aa from shipments_target st,company cp where
+        <if test="market != null">
+    st.market=#{market}
+    </if>
+     and st.year=#{year} and st.company=cp.company group by st.company) as tt   on tt.company=cc.company order by cc.id;
+    </select>
+
+
+    <!--auto generated Code-->
+    <insert id="insert" useGeneratedKeys="true" keyProperty="shipments.companyname">
+        INSERT INTO shipments_target (
+            companyname,
+            market,
+            mount
+        ) VALUES (
+            #{shipments.companyname,jdbcType=VARCHAR},
+            #{shipments.market,jdbcType=VARCHAR},
+            #{shipments.mount,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertSelective" useGeneratedKeys="true" keyProperty="shipments.companyname">
+        INSERT INTO shipments_target
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shipments.companyname!=null"> companyname,</if>
+            <if test="shipments.market!=null"> market,</if>
+            <if test="shipments.mount!=null"> mount,</if>
+        </trim>
+        VALUES
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="shipments.companyname!=null">#{shipments.companyname,jdbcType=VARCHAR},
+            </if>
+            <if test="shipments.market!=null">#{shipments.market,jdbcType=VARCHAR},
+            </if>
+            <if test="shipments.mount!=null">#{shipments.mount,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+
+    <!--auto generated Code-->
+    <insert id="insertList">
+        INSERT INTO shipments_target (
+            companyname,
+            market,
+            mount
+        )VALUES
+        <foreach collection="shipmentss" item="shipments" index="index" separator=",">
+            (
+            #{shipments.companyname,jdbcType=VARCHAR},
+            #{shipments.market,jdbcType=VARCHAR},
+            #{shipments.mount,jdbcType=VARCHAR}
+            )
+        </foreach>
+    </insert>
+
+    <!--auto generated Code-->
+    <update id="updateByPrimaryKeySelective">
+        UPDATE shipments_target
+        <set>
+            <if test="shipments.market != null"> market= #{shipments.market,jdbcType=VARCHAR},</if>
+            <if test="shipments.mount != null"> mount= #{shipments.mount,jdbcType=VARCHAR}</if>
+        </set>
+        WHERE companyname = #{shipments.companyname,jdbcType=VARCHAR}
+    </update>
+</mapper>
+
