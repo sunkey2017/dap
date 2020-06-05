@@ -21,7 +21,7 @@ public interface IPowerStationBaseService {
      * @Param  searchWord
      * @return java.util.List<com.longi.dap.entity.PowerStationBaseBean>
      **/
-    List<PowerStationBaseBean> getPowerStationBaseInfo(String searchWord);
+    List<PowerStationBaseBean> getPowerStationBaseInfo(String searchWord,String userName);
 
     /**
      * @Description 根据电站编码获取电站信息
@@ -30,4 +30,17 @@ public interface IPowerStationBaseService {
      * @return java.util.List<com.longi.dap.entity.PowerStationInfoBean>
      **/
     Map<String,Object> getPowerStationEInfo(String stationId);
+
+    /**
+     * 获取城市信息
+     * @return
+     */
+    List<Map<String, String>> getCityInfo();
+
+    /**
+     * 新增电站信息
+     * @param powerStationBaseBean
+     * @return
+     */
+    Map<String, String> addBaseStation (PowerStationBaseBean powerStationBaseBean);
 }

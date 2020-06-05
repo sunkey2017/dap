@@ -5,13 +5,11 @@ import com.longi.dap.dao.UserMapper;
 import com.longi.dap.entity.UserInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
@@ -28,7 +26,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
     /**
      * 配置用户认证逻辑
-     * @param s 用户名
+     * @params 用户名
      * @return
      * @throws UsernameNotFoundException
      */

@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.AlarmInfoMapper">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.AlarmInfoBean">
+        <result column="alarm_id" property="alarmId" jdbcType="INTEGER"/>
+        <result column="alarm_text" property="alarmText" jdbcType="VARCHAR"/>
+        <result column="alarm_type" property="alarmType" jdbcType="VARCHAR"/>
+        <result column="alarm_time" property="alarmTime" jdbcType="VARCHAR"/>
+        <result column="alarm_level" property="alarmLevel" jdbcType="VARCHAR"/>
+        <result column="alarm_source_id" property="alarmSourceId" jdbcType="VARCHAR"/>
+        <result column="component_number" property="componentNumber" jdbcType="VARCHAR"/>
+        <result column="send_flag" property="sendFlag" jdbcType="VARCHAR"/>
+        <result column="send_time" property="sendTime" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+    <select id="getAlarmInfo"   resultMap="BaseResultMap">
+         select
+           t.alarm_id,
+           t.alarm_text,
+           t.alarm_type,
+           t.alarm_time,
+           t.alarm_level,
+           t.alarm_source_id,
+           t.component_number,
+           t.send_flag,
+           TIMESTAMPDIFF(MINUTE, t.send_time, NOW()) AS send_time,
+           t.remarks
+        from com_component_alarm_info t
+        where str_to_date(t.alarm_time, '%Y-%m-%d %H:%i:%s') > (now() - INTERVAL 3 DAY)
+          and t.send_flag in(0,1)
+        <if test="stationId != null">
+            and t.alarm_source_id = #{stationId}
+        </if>
+        LIMIT 10
+    </select>
+
+    <select id="getAlarmInfos"   resultMap="BaseResultMap">
+        select
+        t.alarm_id,
+        t.alarm_text,
+        t.alarm_type,
+        t.alarm_time,
+        t.alarm_level,
+        t.alarm_source_id,
+        t.component_number,
+        t.send_flag,
+        TIMESTAMPDIFF(MINUTE, t.send_time, NOW()) AS send_time,
+        t.remarks
+        from com_component_alarm_info t
+        where  1=1
+        <if test="stationId != null">
+            and t.alarm_source_id = #{stationId}
+        </if>
+    </select>
+
+    <update id="updateAlarmInfo">
+        UPDATE com_component_alarm_info t
+        <set>
+            <if test="alarmId != null">
+               send_flag = send_flag+1,send_time = now()
+             </if>
+        </set>
+        WHERE alarm_id = #{alarmId,jdbcType=VARCHAR}
+    </update>
+
+
+
+</mapper>
+

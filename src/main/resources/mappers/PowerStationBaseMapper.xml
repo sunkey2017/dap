@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.PowerStationBaseMapper">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.PowerStationBaseBean">
+        <result column="station_id" property="stationId" jdbcType="VARCHAR"/>
+        <result column="station_name" property="stationName" jdbcType="VARCHAR"/>
+        <result column="city_code" property="cityCode" jdbcType="INTEGER"/>
+        <result column="investor" property="investor" jdbcType="VARCHAR"/>
+        <result column="resb_person" property="resbPerson" jdbcType="VARCHAR"/>
+        <result column="station_img1" property="stationImg1" jdbcType="VARCHAR"/>
+        <result column="station_img2" property="stationImg2" jdbcType="VARCHAR"/>
+        <result column="station_address" property="stationAddress" jdbcType="VARCHAR"/>
+        <result column="longitude" property="longitude" jdbcType="VARCHAR"/>
+        <result column="latitude" property="latitude" jdbcType="VARCHAR"/>
+        <result column="installed_capacity" property="installedCapacity" jdbcType="VARCHAR"/>
+        <result column="installation_time" property="installationTime" jdbcType="VARCHAR"/>
+        <result column="hist_peak_power" property="histPeakPower" jdbcType="VARCHAR"/>
+        <result column="env_temperature" property="envTemperature" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+        <result column="station_img1" property="stationImg1" jdbcType="VARCHAR"/>
+        <result column="station_img2" property="stationImg2" jdbcType="VARCHAR"/>
+        <result column="station_img3" property="stationImg3" jdbcType="VARCHAR"/>
+        <result column="station_img4" property="stationImg4" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+    <select id="getPowerStationBaseInfo" resultType="com.longi.dap.entity.PowerStationBaseBean"  resultMap="BaseResultMap">
+        select
+            station_id,
+            station_name,
+            city_code,
+            investor,
+            resb_person,
+            station_img1,station_img2,
+            station_address,
+            longitude,
+            latitude,
+            installed_capacity,
+            installation_time,
+            hist_peak_power,
+            env_temperature,remarks,
+            station_img1,
+            station_img2,
+            station_img3,
+            station_img4,
+            user_id
+        from com_power_station_base_info t
+        left join com_user u on t.user_id = u.id
+        where 1=1
+        <if test="userName != null">
+            and u.user_name = #{userName}
+        </if>
+        <if test="searchWord != null and searchWord != ''">
+            AND CONCAT(t.station_id, t.station_name,t.resb_person) LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+    </select>
+
+
+   <select id="getCityInfo" resultType="java.util.HashMap">
+     SELECT
+            CONCAT(c.city_code,"-",c.city_short_name) AS val,
+            c.city_name AS text
+        FROM
+     com_weather_city_info c
+   </select>
+
+    <insert id="addStation" parameterType="com.longi.dap.entity.PowerStationBaseBean">
+         insert into com_power_station_base_info(
+         station_id,
+	     station_address,
+         city_code,
+	     station_img1,
+	     station_img2,
+	     station_img3,
+	    station_img4,
+	    station_name,
+	    user_id,
+	    longitude,
+	    latitude,
+        resb_person,
+        Investor
+	    )
+        values (#{stationId},
+        #{stationAddress},
+        #{cityCode},#{stationImg1},#{stationImg2}, #{stationImg3}, #{stationImg4},#{stationName},
+        #{userId} ,#{longitude}, #{latitude},#{investor},#{resbPerson})
+    </insert>
+</mapper>
+

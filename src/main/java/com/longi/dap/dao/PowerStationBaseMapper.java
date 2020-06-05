@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  *  电站基本信息mapper
@@ -19,5 +20,9 @@ import java.util.List;
 @Mapper
 public interface PowerStationBaseMapper {
 
-   List<PowerStationBaseBean> getPowerStationBaseInfo(@Param("searchWord") String searchWord);
+   List<PowerStationBaseBean> getPowerStationBaseInfo(@Param("searchWord") String searchWord,@Param("userName")String userName);
+
+   List<Map<String, String>> getCityInfo();
+
+   void addStation(PowerStationBaseBean powerStationBaseBean);
 }

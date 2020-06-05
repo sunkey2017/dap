@@ -99,4 +99,10 @@ public class AssembleDataController {
     String toaddrole(HttpServletRequest request) {
         return "addRole";
     }
+
+
+    @RequestMapping("/addStation")
+    String toaddstation(HttpServletRequest request) {
+        return "addStation";
+    }
 }

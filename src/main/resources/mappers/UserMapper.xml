@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.UserMapper">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.UserBean">
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="active_flag" property="activeFlag" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+        <result column="id" property="id" jdbcType="INTEGER"/>
+    </resultMap>
+
+    <resultMap id="UserDetailsMap" type="com.longi.dap.entity.UserInfo">
+        <result column="user_id" property="userId" jdbcType="INTEGER"/>
+        <result column="user_name" property="userName" jdbcType="VARCHAR"/>
+        <result column="password" property="password" jdbcType="VARCHAR"/>
+        <result column="mobile" property="mobile" jdbcType="VARCHAR"/>
+        <result column="email" property="email" jdbcType="VARCHAR"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+        <result column="real_name" property="realName" jdbcType="VARCHAR"/>
+        <result column="sex" property="sex" jdbcType="VARCHAR"/>
+        <result column="age" property="age" jdbcType="INTEGER"/>
+    </resultMap>
+
+
+    <select id="getUserInfo"   resultMap="BaseResultMap">
+         select
+           t.id user_id,
+           t.user_name,
+           t.password,
+           t.mobile,
+           t.email,
+           t.sex,
+           t.age,
+           t.active_flag
+        from com_user t
+        where 1=1
+        and u.active_flag=1
+        <if test="userName != null and userName != ''">
+            and t.user_name = #{userName}
+        </if>
+    </select>
+
+    <select id="getUserDetails"   resultMap="UserDetailsMap">
+        SELECT
+        u.user_name,
+        u.`password`,
+        u.mobile,
+        u.email,
+        r.role_code,
+        r.role_name,
+        r.description,
+        u.real_name,
+        u.sex,
+        u.age
+        FROM
+        com_user_role ur
+        LEFT JOIN com_role r ON r.id = ur.role_id
+        LEFT JOIN com_user u ON u.id = ur.user_id
+        WHERE
+        1 = 1
+        and u.active_flag=1
+        <if test="userName != null and userName != ''">
+            and u.user_name = #{userName}
+        </if>
+    </select>
+
+    <update id="updatePwd" parameterType="com.longi.dap.entity.UserInfo">
+           update com_user set password = #{password} where user_name = #{userName}
+    </update>
+
+    <insert id="addUser" parameterType="com.longi.dap.entity.UserInfo" useGeneratedKeys="true" keyProperty="userId">
+        insert into com_user(user_name,password,email,mobile,real_name,sex,age)
+        values (#{userName},#{password},#{email},#{mobile},#{realName}, #{sex}, #{age})
+    </insert>
+
+
+
+    <insert id="batchAddUserRole">
+        INSERT INTO com_user_role(user_id,role_id)
+        VALUES
+        <foreach collection="userInfos" item="user" separator=",">
+            (#{user.userId},#{user.roleId})
+        </foreach>
+    </insert>
+
+    <delete id="deleteUser" parameterType="com.longi.dap.entity.UserBean">
+         update com_user set active_flag = #{activeFlag} where id = #{id}
+    </delete>
+
+    <select id="selectUserByName"  resultMap="BaseResultMap">
+        select * from com_user where user_name = #{userName} and active_flag = 1;
+    </select>
+
+    <select id="getUsers"  resultMap="BaseResultMap">
+        select * from com_user u where 1=1 and u.active_flag=1
+        <if test="searchWord != null and searchWord  != ''">
+            and CONCAT(u.user_name, u.real_name) LIKE CONCAT('%',#{searchWord},'%')
+        </if>
+    </select>
+</mapper>
+

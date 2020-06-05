@@ -10,11 +10,13 @@ import com.longi.dap.service.IAlarmService;
 import com.longi.dap.service.IPowerStationBaseService;
 import com.longi.dap.tookits.WebResultUtil;
 import com.longi.dap.vo.DateTypeVO;
+import com.netflix.client.http.HttpRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -47,8 +49,11 @@ public class PowerStationBaseController {
      * @return
      */
      @RequestMapping("/allPowerStation")
-    public  WebResult getAllPowerStationBaseInfo(@RequestParam("searchWord") String searchWord){
-         List<PowerStationBaseBean> allPowerStationBaseInfo = BaseService.getPowerStationBaseInfo(searchWord);
+    public  WebResult getAllPowerStationBaseInfo(@RequestParam("searchWord") String searchWord,HttpServletRequest httpServletRequest){
+         //登录用户名称
+         String userName = httpServletRequest.getSession().getAttribute("username").toString();
+
+         List<PowerStationBaseBean> allPowerStationBaseInfo = BaseService.getPowerStationBaseInfo(searchWord,userName);
          String allPowerStationBaseJson = JSON.toJSONString(allPowerStationBaseInfo);
          WebResult result = WebResultUtil.getResult(allPowerStationBaseJson);
          return  result;
@@ -62,14 +67,22 @@ public class PowerStationBaseController {
      * @return com.longi.dap.entity.WebResult
      **/
     @RequestMapping(value="/getPowerStationById",method= RequestMethod.POST)
-    public WebResult getPowerStationInfo(@RequestParam("stationId") String stationId){
+    public WebResult getPowerStationInfo(@RequestParam("stationId") String stationId,HttpServletRequest httpServletRequest){
+       //登录用户名称
+        String userName = httpServletRequest.getSession().getAttribute("username").toString();
         //装机容量
-        List<PowerStationBaseBean> allPowerStationBaseInfo = BaseService.getPowerStationBaseInfo(stationId);
+        List<PowerStationBaseBean> allPowerStationBaseInfo = BaseService.getPowerStationBaseInfo(stationId,userName);
         List<PowerStationBaseBean> currStationInfo = allPowerStationBaseInfo.stream().filter(sx -> stationId.equals(sx.getStationId())).collect(Collectors.toList());
         String installedCapacity = currStationInfo.get(0).getInstalledCapacity();
         //日发电量,实时功率,累计发电量
         Map<String,Object> resultMap = BaseService.getPowerStationEInfo(stationId);
         resultMap.put("installedCapacity",installedCapacity);
+
+        resultMap.put("stationImg1",allPowerStationBaseInfo.get(0).getStationImg1());
+        resultMap.put("stationImg2",allPowerStationBaseInfo.get(0).getStationImg2());
+        resultMap.put("stationImg3",allPowerStationBaseInfo.get(0).getStationImg3());
+        resultMap.put("stationImg4",allPowerStationBaseInfo.get(0).getStationImg4());
+
         WebResult result = WebResultUtil.getResult( JSON.toJSONString(resultMap));
         return result;
     }
@@ -135,4 +148,18 @@ public class PowerStationBaseController {
     }
 
 
+
+    @RequestMapping(value="/getCityInfo",method= RequestMethod.GET)
+    public WebResult getCityInfo(HttpRequest httpRequest){
+        List<Map<String,String>> cityInfoList = BaseService.getCityInfo();
+        WebResult result = WebResultUtil.getResult( JSON.toJSONString(cityInfoList));
+        return result;
+    }
+
+    @RequestMapping(value = "/addBaseStation",method = RequestMethod.POST)
+    public WebResult addBaseStation(@RequestBody PowerStationBaseBean powerStationBaseBean){
+        Map<String, String> map = BaseService.addBaseStation(powerStationBaseBean);
+        WebResult result = WebResultUtil.getResult( JSON.toJSONString(map));
+        return result;
+    }
 }

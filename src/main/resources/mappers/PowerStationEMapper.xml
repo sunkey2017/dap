@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.PowerStationEMapper">
+    <!--auto generated Code-->
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.PowerStationInfoBean">
+        <result column="id" property="id" jdbcType="VARCHAR"/>
+        <result column="station_id" property="stationId" jdbcType="VARCHAR"/>
+        <result column="data_date" property="dataDate" jdbcType="VARCHAR"/>
+        <result column="data_time" property="dataTime" jdbcType="VARCHAR"/>
+        <result column="date_item" property="dateItem" jdbcType="VARCHAR"/>
+        <result column="array_code" property="arrayCode" jdbcType="VARCHAR"/>
+        <result column="voltage" property="voltage" jdbcType="VARCHAR"/>
+        <result column="electric_current" property="electricCurrent" jdbcType="VARCHAR"/>
+        <result column="generating_power" property="generatingPower" jdbcType="VARCHAR"/>
+        <result column="com_temperature" property="comTemperature" jdbcType="VARCHAR"/>
+        <result column="remarks" property="remarks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+    <select id="getPowerStationEInfo" resultType="com.longi.dap.entity.PowerStationInfoBean" resultMap="BaseResultMap">
+        select
+          t.id,
+          t.station_id,
+          t.data_date,
+          t.data_time,
+          t.array_code,
+          t.voltage,
+          t.electric_current,
+          t.generating_power,
+          t.com_temperature,
+          t.remarks
+        from com_power_station_e_info t where  1=1
+        <if test="stationId != null">
+         and t.station_id = #{stationId}
+        </if>
+        <if test="currDate != null">
+            and t.data_date = #{currDate}
+        </if>
+    </select>
+
+    <select id="getDataDaily" parameterType="com.longi.dap.vo.DateTypeVO"  resultMap="BaseResultMap">
+        select
+          t.id,
+          t.station_id,
+          t.data_date,
+          t.data_time,
+           LEFT(t.data_time,2) as date_item,
+          t.array_code,
+          t.voltage,
+          t.electric_current,
+          t.generating_power,
+          t.com_temperature,
+          t.remarks
+        from com_power_station_e_info t
+        where t.station_id = #{dateInfo.stationId}
+        and str_to_date(t.data_date, '%Y-%m-%d') between str_to_date(#{dateInfo.beginDate}, '%Y-%m-%d') and str_to_date(#{dateInfo.endDate}, '%Y-%m-%d')
+       order by t.data_time
+    </select>
+
+    <select id="getDataWeekMonth" parameterType="com.longi.dap.vo.DateTypeVO"  resultMap="BaseResultMap">
+         select
+          t.id,
+          t.station_id,
+          t.data_date,
+          t.data_time,
+          t.array_code,
+          t.voltage,
+          t.electric_current,
+          t.generating_power,
+          t.com_temperature,
+          t.remarks
+        from com_power_station_e_info t
+        where t.station_id = #{dateInfo.stationId}
+        and str_to_date(t.data_date, '%Y-%m-%d') BETWEEN str_to_date(#{dateInfo.beginDate}, '%Y-%m-%d') AND str_to_date(#{dateInfo.endDate}, '%Y-%m-%d')
+       order by t.data_date,t.data_time
+    </select>
+
+    <select id="getDataYear" parameterType="com.longi.dap.vo.DateTypeVO"  resultMap="BaseResultMap">
+         select
+          t.id,
+          t.station_id,
+          t.data_date,
+          t.data_time,
+          t.array_code,
+          t.voltage,
+          t.electric_current,
+          t.generating_power,
+          t.com_temperature,
+          t.remarks
+        from com_power_station_e_info t
+        where t.station_id = #{dateInfo.stationId}
+        and str_to_date(t.data_date, '%Y-%m-%d') BETWEEN str_to_date(#{dateInfo.beginDate}, '%Y-%m-%d') AND str_to_date(#{dateInfo.endDate}, '%Y-%m-%d')
+       order by t.data_date,t.data_time
+    </select>
+
+    <select id="getTableColumns"  resultType="map">
+        select column_name,column_comment from information_schema.columns  where 1=1
+        <if test="tableName != null and tableName != ''">
+            AND TABLE_NAME = #{tableName}
+        </if>
+    </select>
+
+
+    <select id="getExportData" parameterType="com.longi.dap.vo.DateTypeVO"  resultType="java.util.Map">
+        select ${exportInfo.fieldStr}
+        from com_power_station_e_info t
+        where t.station_id = #{exportInfo.stationId}
+        and str_to_date(t.data_date, '%Y-%m-%d') between str_to_date(#{exportInfo.beginDate}, '%Y-%m-%d') and str_to_date(#{exportInfo.endDate}, '%Y-%m-%d')
+       order by t.data_time
+    </select>
+
+
+
+</mapper>
+

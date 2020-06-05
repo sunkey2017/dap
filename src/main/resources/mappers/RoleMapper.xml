@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.longi.dap.dao.RoleMapper">
+    <resultMap id="BaseResultMap" type="com.longi.dap.entity.RoleBean">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="user_role_id" property="userRoleId" jdbcType="INTEGER"/>
+        <result column="role_name" property="roleName" jdbcType="VARCHAR"/>
+        <result column="role_code" property="roleCode" jdbcType="VARCHAR"/>
+        <result column="description" property="description" jdbcType="VARCHAR"/>
+    </resultMap>
+
+
+
+
+    <select id="getRoles"   resultMap="BaseResultMap">
+        SELECT
+            r.id,
+            r.role_code,
+            r.role_name,
+            r.description
+        FROM
+	     com_role r;
+    </select>
+
+    <select id="getUserRolesByName" resultMap="BaseResultMap">
+
+        SELECT
+            r.role_code,
+            r.role_name,
+            r.id,
+            ur.id as user_role_id
+        FROM
+            com_user_role ur
+        LEFT JOIN com_role r ON r.id = ur.role_id
+        LEFT JOIN com_user u ON u.id = ur.user_id
+        WHERE
+            u.user_name = #{userName}
+    </select>
+
+    <delete id="deleteUserRole"  parameterType = "java.util.List">
+        delete from com_user_role where
+        id in
+        <foreach collection="list"  item="item" open="(" separator="," close=")"  >
+            #{item}
+        </foreach>
+    </delete>
+
+    <insert id="addRole" parameterType="com.longi.dap.entity.RoleBean">
+         insert into com_role(role_code,role_name,description)
+        values (#{roleCode},#{roleName},#{description})
+    </insert>
+
+    <delete id="deleteRole" parameterType="com.longi.dap.entity.RoleBean">
+        delete from com_role where id=#{id}
+    </delete>
+</mapper>
+
