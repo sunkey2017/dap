@@ -1,0 +1,36 @@
+server:
+  port: 8761
+
+spring:
+  freemarker:
+    prefer-file-system-access: false
+  application:
+    name: eurka-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://10.0.10.98:3306/vaas?serverTimezone=GMT&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    username: root
+    password: root
+    type: org.apache.commons.dbcp.BasicDataSource
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  thymeleaf:
+    cache: false
+
+mqtt:
+  path: failover:(tcp://10.0.10.107:61617,tcp://10.0.10.107:61618)?randomize=true
+
+xnjc:
+  uname: test01
+  upwd: 123456
+  boxlist: http://116.62.41.124/pv/api/getboxlist
+  grouplist: http://116.62.41.124/pv/api/getgrouplist
+  elementlist: http://116.62.41.124/pv/api/getelementlist
+  elementlast: http://116.62.41.124/pv/api/getelementlast
+  elementalarmlist: http://116.62.41.124/pv/api/getelementalarmlist
+  elementhistorylist: http://116.62.41.124/pv/api/getelementhistorylist
+
+weather:
+  path: http://t.weather.sojson.com/api/weather/city/

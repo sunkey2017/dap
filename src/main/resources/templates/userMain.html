@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/common.js"></script>
+    <link rel="stylesheet" href="./js/plugins/message/message.css">
+    <link rel="stylesheet" href="./css/tootip/hint.min.css">
+    <link rel="stylesheet" type="text/css" href="./js/plugins/page/page.css"/>
+    <link rel="stylesheet" href="./css/tootip/hint.min.css">
+    <title>用户管理</title>
+</head>
+<body>
+<div class="main-head">
+        <span onclick="toPage('main')">
+            <img src="images/logo.png" class="main-img">
+            <span class="main-span">智能组件系统</span>
+        </span>
+
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;"
+             id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('changePwd')">修改密码</p>
+            <p sec:authorize="hasRole('ROLE_ADMIN')"
+               style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt" id="head-realName"></p>
+    </div>
+</div>
+<div style="min-height: 600px; overflow: auto;">
+
+    <div style="margin:0 auto; width: 72%; border: 1px solid #e3e3e3; padding: 10px;min-height:500px;">
+
+        <div class="personal-header">用户管理</div>
+        <!--列表-->
+        <div class="user-ul-div" id="user-ul">
+            <div style="height: 40px;">
+                <input id="searchUser" class="user-search" type="text" placeholder="输入用户名或真实姓名查询">
+                <input class="user-search-btn" value="查询" type="button" onclick="userMain.searchUser()">
+                <div class="user-btn hint--top hint--rounded hint--info" data-hint="新增用户" onclick="toPage('addUser')"></div>
+            </div>
+
+            <ul class="user-th">
+                <li class="user-ul user-one">用户名</li>
+                <li class="user-ul user-two">真实姓名</li>
+                <li class="user-ul user-three">邮箱</li>
+                <li class="user-ul user-four">电话</li>
+                <li class="user-ul user-five">性别</li>
+                <li class="user-ul user-six">年龄</li>
+                <li class="user-ul user-seven">操作</li>
+            </ul>
+            <div id="user-list-ul">
+            </div>
+        </div>
+        <!--翻页-->
+        <div class="pagediv" style="margin:0 auto; width: 100%;"></div>
+    </div>
+    <script data-main="js/userMain" src="js/require.js"></script>
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+</body>
+</html>

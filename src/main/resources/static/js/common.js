@@ -35,3 +35,37 @@ window.setInterval(function(){
     dynamicSetData("componentOut",2829);
 },5000);
 
+
+/**
+ * 跳转页面带参数
+ * @param page 页面名称
+ * @param params 参数字符串
+ */
+function toPageWithParmas (page, params) {
+    window.location.href = "http://" + hostname + ":" + port + "/" + page + "?" +params;
+}
+
+/**
+ * 获取页面传值参数
+ * @param name 想要获取的参数名
+ * @returns {string|null} 返回对应的参数值
+ */
+function getUrlParam(name) {
+    var reg = new RegExp("(\\?|\&)" + name + "=([^&]*)(\&|$)", "i");
+    var r = window.location.href.match(reg);
+    if (r != null) return unescape(r[2]); return null;
+}
+
+/**
+ * 格式化数据，保留两位小数
+ * @param val
+ */
+function fomateNumber(val) {
+    if (val !== "" || val!== null) {
+        var num = new Number(val);
+        return num.toFixed(2)
+    } else {
+        return "";
+    }
+
+}

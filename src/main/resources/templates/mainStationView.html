@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="js/common.js"></script>
+    <script src="http://api.map.baidu.com/api?v=2.0&ak=PlhFWpA02aoURjAOpnWcRGqw7AI8EEyO "></script>
+    <title>首页</title>
+</head>
+<body>
+<div style="min-height: 600px; overflow: auto;">
+<div class="main-head">
+    <span onclick="toPage('main')" style="cursor: pointer">
+    <img src="images/logo.png" class="main-img">
+    <span class="main-span">智能组件系统</span>
+    </span>
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;" id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('changePwd')">修改密码</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt"  id="head-realName"></p>
+    </div>
+</div>
+<!--内容部分-->
+<div style="min-height: 500px;overflow: auto;padding-bottom: 5px;">
+    <ul class="tanchange" id="tanchange">
+        <li id="bgMapBtn" class="" onclick="changeTab('map')"><img class="btn-img" src="images/map.png" width="15" height="15"><a href="###">地图模式</a></li>
+        <li id="tuModule" class="" onclick="changeTab('info')"><img class="btn-img" src="images/imgtable.png" width="15" height="15"><a href="###">图表模式</a></li>
+        <li id="listModule" class="" onclick="changeTab('list')"><img class="btn-img" src="images/table.png"><a href="###">列表模式</a></li>
+    </ul>
+    <!--地图-->
+    <div class="div_any_child_map" id="mapdiv">
+        <div id="mapChart" style="width:97.5%;height:95%;"></div>
+    </div>
+    <!--列表-->
+    <div class="div_any_child" id="tablediv" style="display: none;">
+        <div id="table" class="div_any_child_class" style="display: none;">
+            <div class="search">
+                <input id="table_condition" class="txt" type="text" placeholder="输入电站名称、负责人名字、电站编号等关键字">
+            </div>
+            <ul style="padding:0px;margin:0px;" id="table-ul">
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">电站编号</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">电站名称</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">地址</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">装机容量</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">安装时间</span>-->
+<!--                    <span style="width:15%;">历史峰值功率</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px; cursor: pointer;"-->
+<!--                          onclick="toPageWithParmas('detail', '泰州电站')">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+<!--                <li class="tableTitle">-->
+<!--                    <span style="width:15%; margin-right:10px;">XDF001</span>-->
+<!--                    <span style="width:20%; margin-right:10px;">泰州电站</span>-->
+<!--                    <span style="width:20% ;margin-right:10px;">泰州某街道</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">100</span>-->
+<!--                    <span style="width:10%; margin-right:10px;">2019.06.05</span>-->
+<!--                    <span style="width:15%;">113.4</span>-->
+<!--                </li>-->
+            </ul>
+        </div>
+    </div>
+    <!--信息介绍-->
+    <div class="div_any_child" id="infodiv" style="display: none">
+        <div class="search">
+            <input id="info_condition" class="txt" type="text" placeholder="输入电站名称、负责人名字、电站编号等关键字">
+        </div>
+        <div id="info" class="div_any_child_class" style="display: none">
+<!--            <div class="stationList">-->
+<!--                <p class="station-p">泰州实证电站监控</p>-->
+<!--                <div>-->
+<!--                    <div class="pjCon">-->
+<!--                        <div class="pjsleftL">-->
+<!--                            <span onclick="toPageWithParmas('detail', '泰州电站')">-->
+<!--                                <img style="width:100%; height:100%; cursor: pointer;" src="../images/station.jpg">-->
+<!--                            </span>-->
+<!--                        </div>-->
+<!--                        <dl class="pjsleftB">-->
+<!--                            <dd><span>电站编号 :  </span> <span>LJSZDZ-DQ</span></dd>-->
+<!--                            <dd><span>投资单位 :  </span> <span>隆基绿能科技股份有限公司</span></dd>-->
+<!--                            <dd><span>负责人 : </span> <span>赵良浩</span></dd>-->
+<!--                        </dl>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="stationList">-->
+<!--                <p class="station-p">泰州实证电站监控</p>-->
+<!--                <div>-->
+<!--                    <div class="pjCon">-->
+<!--                        <div class="pjsleftL">-->
+<!--                            <a href="#">-->
+<!--                                <img style="width:100%; height:100%;" src="../images/station.jpg">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <dl class="pjsleftB">-->
+<!--                            <dd><span>电站编号 :  </span> <span>LJSZDZ-DQ</span></dd>-->
+<!--                            <dd><span>投资单位 :  </span> <span>隆基绿能科技股份有限公司</span></dd>-->
+<!--                            <dd><span>负责人 : </span> <span>赵良浩</span></dd>-->
+<!--                        </dl>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="stationList">-->
+<!--                <p class="station-p">泰州实证电站监控</p>-->
+<!--                <div>-->
+<!--                    <div class="pjCon">-->
+<!--                        <div class="pjsleftL">-->
+<!--                            <a href="#">-->
+<!--                                <img style="width:100%; height:100%;" src="../images/station.jpg">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <dl class="pjsleftB">-->
+<!--                            <dd><span>电站编号 :  </span> <span>LJSZDZ-DQ</span></dd>-->
+<!--                            <dd><span>投资单位 :  </span> <span>隆基绿能科技股份有限公司</span></dd>-->
+<!--                            <dd><span>负责人 : </span> <span>赵良浩</span></dd>-->
+<!--                        </dl>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="stationList">-->
+<!--                <p class="station-p">泰州实证电站监控</p>-->
+<!--                <div>-->
+<!--                    <div class="pjCon">-->
+<!--                        <div class="pjsleftL">-->
+<!--                            <a href="#">-->
+<!--                                <img style="width:100%; height:100%;" src="../images/station.jpg">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <dl class="pjsleftB">-->
+<!--                            <dd><span>电站编号 :  </span> <span>LJSZDZ-DQ</span></dd>-->
+<!--                            <dd><span>投资单位 :  </span> <span>隆基绿能科技股份有限公司</span></dd>-->
+<!--                            <dd><span>负责人 : </span> <span>赵良浩</span></dd>-->
+<!--                        </dl>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+<!--            <div class="stationList">-->
+<!--                <p class="station-p">泰州实证电站监控</p>-->
+<!--                <div>-->
+<!--                    <div class="pjCon">-->
+<!--                        <div class="pjsleftL">-->
+<!--                            <a href="#">-->
+<!--                                <img style="width:100%; height:100%;" src="../images/station.jpg">-->
+<!--                            </a>-->
+<!--                        </div>-->
+<!--                        <dl class="pjsleftB">-->
+<!--                            <dd><span>电站编号 :  </span> <span>LJSZDZ-DQ</span></dd>-->
+<!--                            <dd><span>投资单位 :  </span> <span>隆基绿能科技股份有限公司</span></dd>-->
+<!--                            <dd><span>负责人 : </span> <span>赵良浩</span></dd>-->
+<!--                        </dl>-->
+<!--                    </div>-->
+<!--                </div>-->
+<!--            </div>-->
+        </div>
+    </div>
+
+    <script data-main="js/mainStation" src="js/require.js"></script>
+</div>
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+</body>
+<script type="text/javascript">
+    function changeTab(type) {
+        if ("map" === type) {
+            document.getElementById("mapChart").style.display = 'inline-block';
+            document.getElementById("mapdiv").style.display = 'block';
+
+            document.getElementById("infodiv").style.display = 'none';
+            document.getElementById("info").style.display = 'none';
+            document.getElementById("table").style.display = 'none';
+            document.getElementById("tablediv").style.display = 'none';
+        }
+        if ("info" === type) {
+            document.getElementById("infodiv").style.display = 'block';
+            document.getElementById("info").style.display = 'block';
+
+            document.getElementById("mapChart").style.display = 'none';
+            document.getElementById("mapdiv").style.display = 'none';
+            document.getElementById("table").style.display = 'none';
+            document.getElementById("tablediv").style.display = 'none';
+        }
+        if ("list" === type) {
+            document.getElementById("table").style.display = 'inline-block';
+            document.getElementById("tablediv").style.display = 'block';
+
+            document.getElementById("mapChart").style.display = 'none';
+            document.getElementById("mapdiv").style.display = 'none';
+            document.getElementById("infodiv").style.display = 'none';
+            document.getElementById("info").style.display = 'none';
+
+        }
+    }
+
+</script>
+</html>

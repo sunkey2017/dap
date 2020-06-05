@@ -1,0 +1,36 @@
+server:
+  port: 8761
+
+spring:
+  freemarker:
+    prefer-file-system-access: false
+  application:
+    name: eurka-server
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    url: jdbc:mysql://192.168.0.154:3306/longi_base_component_info?serverTimezone=GMT&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
+    username: root
+    password: Longi@123
+    type: org.apache.commons.dbcp.BasicDataSource
+  devtools:
+    restart:
+      enabled: true
+      additional-paths: src/main/java
+  thymeleaf:
+    cache: true
+
+mqtt:
+  path: tcp://192.168.0.28:61616
+
+xnjc:
+  uname: test01
+  upwd: 123456
+  boxlist: http://116.62.41.124/pv/api/getboxlist
+  grouplist: http://116.62.41.124/pv/api/getgrouplist
+  elementlist: http://116.62.41.124/pv/api/getelementlist
+  elementlast: http://116.62.41.124/pv/api/getelementlast
+  elementalarmlist: http://116.62.41.124/pv/api/getelementalarmlist
+  elementhistorylist: http://116.62.41.124/pv/api/getelementhistorylist
+
+weather:
+  path: http://t.weather.sojson.com/api/weather/city/

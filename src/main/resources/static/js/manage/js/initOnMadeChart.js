@@ -6,7 +6,7 @@ define(['echarts'],function (echarts){
         var yData = jsonOptionData.data;
         onMadeChart.setOption({
             title : {
-                text: '各工序WIP',
+                text: '',
                 textStyle:{
                     color : '#fff'
                 }

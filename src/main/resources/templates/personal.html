@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>个人中心</title>
+    <style>
+        personal-input
+    </style>
+</head>
+<body>
+<div style="min-height: 600px; overflow: auto;">
+<div class="main-head">
+    <span onclick="toPage('main')" style="cursor: pointer">
+    <img src="images/logo.png" class="main-img">
+    <span class="main-span">智能组件系统</span>
+    </span>
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;" id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('changePwd')">修改密码</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt"  id="head-realName"></p>
+    </div></div>
+<!--内容部分-->
+<div style="margin:0 auto; width: 50%; border: 1px solid #e3e3e3; padding: 10px;">
+    <div class="personal-header">基本信息</div>
+    <div class="personal-div"><label>用户名&nbsp;&nbsp;&nbsp;：</label> <input type="text" class="personal-input" name="username" id="username" value="" disabled="disabled"></div>
+    <div class="personal-div" ><label>真实姓名：</label> <input type="text" class="personal-input" name="realname" id="realname" value="" disabled="disabled"></div>
+    <div class="personal-div"> <label>邮箱地址：</label> <input type="text" class="personal-input" name="email" id="email" value="" disabled="disabled"></div>
+    <div class="personal-div" ><label>联系方式：</label> <input type="text" class="personal-input" name="phone" id="phone" value="" disabled="disabled"></div>
+    <div class="personal-div"> <label>性&nbsp; &nbsp;&nbsp; &nbsp;别：</label> <input type="text" class="personal-input" name="sex" id="sex" value="" disabled="disabled"></div>
+    <div class="personal-div" style="margin-bottom: 0px;"><label>年&nbsp; &nbsp;&nbsp; &nbsp;龄：</label> <input type="text" class="personal-input" name="age" id="age" value="" disabled="disabled"></div>
+    <div sec:authorize="hasRole('ROLE_ADMIN')">
+           <div style="display: inline-block; text-align: center;margin-top:10px;">拥有角色：</div>
+        <div style="display: inline-block;margin-bottom:20px;" id="role-div">
+        </div>
+    </div>
+    <div class="personal-div" style="margin-bottom: 0px;">
+        <button class="personal-submit" type="button" name='submit' onclick="toPage('main')">取消</button>
+    </div>
+</div>
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+<script data-main="js/personal" src="js/require.js"></script>
+
+</body>
+</html>

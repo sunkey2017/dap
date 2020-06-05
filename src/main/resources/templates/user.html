@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>新增用户</title>
+</head>
+<body>
+<div class="main-head">
+    <span onclick="toPage('main')" style="cursor: pointer">
+    <img src="images/logo.png" class="main-img">
+    <span class="main-span">智能组件系统</span>
+    </span>
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;"
+             id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('changePwd')">修改密码</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt" id="head-realName"></p>
+    </div>
+</div>
+
+<div style="min-height: 600px; overflow: auto;">
+    <!--内容部分-->
+    <div style="margin:0 auto; width: 50%; border: 1px solid #e3e3e3; padding: 10px;">
+        <div class="personal-header">添加用户</div>
+        <form action="" method="post" name='info' id='form'>
+            <div class="personal-div"><label><span style="color: #CC281C">*</span>用户名&nbsp;&nbsp;&nbsp;：</label> <input
+                    type="text" class="personal-input" name="userName" id="new-username" required></div>
+            <div id="userName-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >用户名不能为空</span></div>
+            <div id="userName-error2" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >用户名重复请重新输入</span></div>
+            <div class="personal-div"><label><span style="color: #CC281C">*</span>真实姓名：</label>
+                <input type="text"
+                       class="personal-input"
+                       name="realName"
+                       id="new-realname"
+                       required>
+            </div>
+            <div id="realName-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >真实姓名不能为空</span></div>
+            <div class="personal-div"><label><span style="color: #CC281C">*</span>密&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;码：</label>
+                <input type="password" class="personal-input" name="password" id="new-pwd" required></div>
+            <div id="passsword-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >密码不能为空</span></div>
+            <div class="personal-div"><label>邮&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;箱：</label>
+                <input type="text"
+                       class="personal-input"
+                       name="email"
+                       id="new-email">
+            </div>
+            <div id="email-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" id="email-span">邮箱格式不正确，例如：web@123.com</span></div>
+            <div class="personal-div"><label>电&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;话：</label>
+                <input type="text"
+                       class="personal-input"
+                       name="mobile"
+                       id="new-mobile">
+            </div>
+            <div id="mobile-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" id="mobile-span">电话格式不正确，请重新输入</span></div>
+            <div class="personal-div" style="margin-bottom: 0px;">
+                <label>性&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;别：</label>
+                <div style="width:15%;display: inline-block;margin-left: 5%;">
+                    男<input type="radio" name="sex"
+                            id="new-sex-m" value="1"/>
+                </div>
+                <div style="width:10%;display: inline-block;margin-right: 5%;">
+                    女<input type="radio" name="sex"
+                            id="new-sex-w" value="0"/>
+                </div>
+            </div>
+            <div class="personal-div"><label>年&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;龄：</label>
+                <input type="number" class="personal-input" name="age" id="new-age"></div>
+            <div style="width: 100%; text-align: center;">
+                <div style="display: inline-block; text-align: center;"><span style="color: #CC281C">*</span>分配角色：</div>
+                <div style="display: inline-block;margin-bottom:20px;" id="role-div">
+                    <!--                    <input type="checkbox" name="role" value="ROLE_ADMIN"/>管理员-->
+                    <!--                    <input type="checkbox" name="role" value="ROLE_USER"/>用户-->
+                    <!--                    <input type="checkbox" name="role" value="ROLE_DEV"/>开发者-->
+                </div>
+            </div>
+            <div id="role-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >必须分配角色</span></div>
+
+            <div class="personal-div" style="margin-bottom: 0px;">
+                <button class="personal-submit" type="button" name='submit' id="user-submit">提交</button>
+                <button class="personal-submit" type="button" name='submit' onclick="toPage('user')">取消</button>
+            </div>
+        </form>
+    </div>
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+<script data-main="js/user" src="js/require.js"></script>
+
+</body>
+</html>

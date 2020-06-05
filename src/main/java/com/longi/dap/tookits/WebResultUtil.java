@@ -1,12 +1,10 @@
 package com.longi.dap.tookits;
 
 import com.longi.dap.entity.WebResult;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 /**
  * @ClassName WebResultUtil
- * @Description TODO
+ * @Description
  * @Author jiangsida
  * @VERSION 1.0
  **/

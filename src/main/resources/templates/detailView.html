@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/common.js"></script>
+    <script type="text/javascript" src="js/plugins/laydate/laydate.js"></script>
+    <script type="text/javascript" src="js/plugins/jquery/jquery.min.js"></script>
+    <link rel="stylesheet" href="./js/plugins/banner/osSlider.css">
+    <link rel="stylesheet" href="./js/plugins/confirm/xcConfirm.css">
+    <title>detail</title>
+
+<!--    用于覆写弹窗样式-->
+    <style type="text/css">
+        .layui-laydate, .layui-laydate-hint{
+            z-index: 2150000000 !important;
+        }
+
+        .xcConfirm .popBox .txtBox {
+            margin: 10px 40px;
+            height: 65%;
+            overflow: hidden;
+        }
+        .xcConfirm .popBox .btnGroup .sgBtn{
+            margin-top:7px !important;
+        }
+
+        .xcConfirm .popBox .txtBox p {
+            height: 290px !important;
+            margin-bottom: 0px;
+            margin-top: 0px !important;
+            line-height: 20px !important;
+        }
+        .xcConfirm .popBox {
+            width: 700px !important;
+            height: 360px !important;
+        }
+    </style>
+</head>
+<body>
+<!--头部-->
+<div class="main-head">
+    <span onclick="toPage('main')">
+    <img src="images/logo.png" class="main-img">
+    <span class="main-span">智能组件系统</span>
+    </span>
+    <div class="head-menu">
+        <span  class="choose-bottom" id="yibiao-menu" style="cursor: pointer">
+            <div class="head-menu-img"></div>
+            <span class="head-menu-img-text">仪表图</span>
+        </span>
+        <span id = "buju-menu" style="cursor: pointer;">
+            <div  class="head-menu-img head-menu-img-buju" ></div>
+            <span class="head-menu-img-text">布局图</span>
+        </span>
+    </div>
+
+
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;" id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('changePwd')">修改密码</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt"  id="head-realName"></p>
+    </div>
+</div>
+
+<div style="min-height: 600px;overflow: auto; padding-bottom:20px;">
+<!--头部卡片信息区域-->
+<div id="card" class="card">
+    <div id="card-left" class="card-left">
+        <div class="card-content color-green">
+            <img src="images/zjrl.png" height="50" width="50" class="card-img">
+            <div class="card-text">
+            <div class="card-content-title">装机容量</div>
+            <div class="card-content-word"><span id="installedCapacity"></span>Kwp</div>
+            </div>
+        </div>
+        <div class="card-content color-orange">
+            <img src="images/rfdl.png" height="50" width="50" class="card-img">
+            <div class="card-text">
+            <div class="card-content-title">日发电量</div>
+            <div class="card-content-word"><span id="dailyGeneration"></span>Kwh</div>
+            </div>
+        </div>
+        <div class="card-content color-blue">
+            <img src="images/gl.png" height="50" width="50" class="card-img">
+            <div class="card-text">
+            <div class="card-content-title">实时功率</div>
+            <div class="card-content-word"><span id="realTimePower"></span>KW</div>
+            </div>
+        </div>
+        <div class="card-content color-pink">
+            <img src="images/ljfdl.png" height="50" width="50" class="card-img">
+            <div class="card-text">
+            <div class="card-content-title">累计发电量</div>
+            <div class="card-content-word"><span id="summaryPower"></span>Kwh</div>
+            </div>
+        </div>
+
+        <div class="card-content-warn">
+            <div class="warn-head-one">报警情况</div>
+             <div class="warn-div-W">
+                 电压警报:<span id="wNum" class="warn-num"></span>个
+                 <div id="wMarquee" >
+                 </div>
+             </div>
+             <div class="warn-div-T">
+                 温度警报:<span id="tNum"  class="warn-num"></span>个
+                 <div id="tMarquee" >
+                 </div>
+             </div>
+        </div>
+<!--        <div class="card-content-warn">-->
+<!--            <div class="warn-head-two">温度报警</div>-->
+<!--             <p>4个</p>-->
+<!--        </div>-->
+    </div>
+<!--    <div id="card-right" class="card-right">-->
+<!--        <div class="card-content-right">-->
+<!--            <img src="../images/logo.png" style="width: 100%; margin-top: 12px;">-->
+<!--        </div>-->
+<!--    </div>-->
+</div>
+
+<!--表格显示区域-->
+<div id="content" class="content">
+    <div id="content-card-left" class="content-card-left">
+        <div style="border-bottom: 1px solid #eeeeee">
+            <p class="content-card-heard-text" style="padding: 6px 5px 0 25px;">实时功率</p>
+        </div>
+        <!--当天展示图表-->
+        <div style="padding:10px 0px 10px 0px;border-bottom: 1px solid #eeeeee;">
+            <div id="areaChart" class="p_chart"></div>
+        </div>
+        <!-- 按钮区域-->
+        <div style="padding:5px 0px 10px 80px;margin-top: 15px;">
+            <button class="chart-btn chart-btn-date btn-click">日</button>
+            <button class="chart-btn chart-btn-weak">周</button>
+            <button class="chart-btn chart-btn-month">月</button>
+            <button class="chart-btn chart-btn-year">年</button>
+            <input type="text" class="date-input" placeholder="请选择日期" id="daypicker">
+            <input type="text" class="date-input" placeholder="请选择日期" id="weekpicker" style="display: none;">
+            <input type="text" class="date-input" placeholder="请选择年份" id="yearpicker" style="display: none;">
+            <input type="text" class="date-input" placeholder="请选择年月" id="monthpicker"  style="display: none;">
+            <img src="../images/excel.png" class = "excel-img" id="excel">
+        </div>
+        <hr>
+        <!-- 汇总显示区域-->
+        <div class="summary-div">
+            <h3 style="font-weight: lighter">系统发电量：<span style="color: #5FB878;font-weight: 600;" id="allPower"></span>KWh</h3>
+        </div>
+        <!-- 柱形图形区域-->
+        <div id="dataSetChart" class="p_chart"></div>
+    </div>
+
+    <div id="content-info-left" class="content-info-left">
+        <span style="padding-left: 5px; font-size: 20px; margin-bottom: 5px; border-left: 5px solid #5bc0de;">电站概况</span>
+        <div class="content-img" id="banner">
+            <div class="slider">
+                <ul class="slider-main">
+                    <li>
+                        <img src="./images/address.jpg" alt="" style="width: 100%;" class="img-banner">
+                    </li>
+                    <li>
+                        <img src="./images/address1.jpg" alt="" style="width: 100%;"class="img-banner">
+                    </li>
+                    <li>
+                        <img src="./images/address2.jpg" alt="" style="width: 100%;" class="img-banner">
+                    </li>
+                    <li>
+                        <img src="./images/address3.jpg" alt="" style="width: 100%;" class="img-banner">
+                    </li>
+                </ul>
+            </div>
+        </div>
+        <div class="content-info-text">
+            <p class="content-info-p">名称：<span id = "stationName"></span></p>
+            <p class="content-info-p">地址：<span id="stationAddress"></span></p>
+            <p class="content-info-p">已安装：<span id="installationTime"></span> </p>
+            <p>历史峰值功率：<span id="histPeakPower"></span>KWp</p>
+        </div>
+
+        <div class="content-info-weather">
+            <div style="float: left">
+                <img id = "weather-today" class="content-info-weather-img"  style="width:100px; height:100px;">
+            </div>
+            <div style="float: right">
+                <p id="type"></p>
+                <p id="wendu"></p>
+                <p id="shidu"></p>
+                <p id="quality"></p>
+                <p id="pm10-25"></p>
+                <p id="fl-fx"></p>
+                <p id="sunset-sunrise"></p>
+            </div>
+        </div>
+
+        <div style="margin-top: 5px;" id="forecast-weather">
+<!--            <div class="weather-card">-->
+<!--                <p class="font10">Monday</p>-->
+<!--                <img src="../images/weather.png" class="weather-img-small">-->
+<!--                <p class="font4">18~19°C</p>-->
+<!--                <p class="font8">Sunny</p>-->
+<!--            </div>-->
+<!--            <div class="weather-card">-->
+<!--                <p class="font10">Tuesday</p>-->
+<!--                <img src="../images/weather.png" class="weather-img-small">-->
+<!--                <p class="font4">18~20°C</p>-->
+<!--                <p class="font8">Sunny</p>-->
+<!--            </div>-->
+<!--            <div class="weather-card">-->
+<!--                <p class="font10">Wednesday</p>-->
+<!--                <img src="../images/weather.png" class="weather-img-small">-->
+<!--                <p class="font4">19~22°C</p>-->
+<!--                <p class="font8">Sunny</p>-->
+<!--            </div>-->
+        </div>
+
+        <span style="padding-left: 5px; font-size: 20px; margin: 10px 0px 5px 0px; border-left: 5px solid #8cce87; display: block">环保性</span>
+        <div class="content-info-text">
+            <div style="border-bottom: #eeeeee 1px solid !important;">
+                <img src="../images/tree.png" style="display: inline-block; width:49px; height:41px;"/>
+                <p class="content-info-weather-text" >二氧化碳排放減少：<span id="co2"></span>kg</p>
+            </div>
+            <div>
+                <img src="../images/tree1.png" style="display: inline-block; width:49px; height:41px;"/>
+                <p class="content-info-weather-text" >相当于种植树木的数量：<span id="tree"></span></p>
+            </div>
+        </div>
+    </div>
+</div>
+    <div style="display: none;" id="excel-export"></div>
+
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+<script type="text/javascript" src="js/plugins/banner/osSlider.min.js"></script>
+
+<script type="text/javascript">
+    var slider = new osSlider({ //开始创建效果
+        pNode:'.slider', //容器的选择器 必填
+        cNode:'.slider-main li', //轮播体的选择器 必填
+        speed:3000, //速度 默认3000 可不填写
+        autoPlay:true //是否自动播放 默认true 可不填写
+    });
+</script>
+</body>
+
+<script data-main="js/detailMain" src="js/require.js"></script>
+</html>

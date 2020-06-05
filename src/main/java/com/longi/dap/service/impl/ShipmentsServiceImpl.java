@@ -1,20 +1,18 @@
 package com.longi.dap.service.impl;
 
+import com.longi.dap.dao.ShipmentsMapper;
+import com.longi.dap.entity.Shipments;
 import com.longi.dap.service.ShipmentsService;
 import com.longi.dap.tookits.ChartUtil;
 import com.longi.dap.tookits.StringBeginUtil;
 import com.longi.dap.tookits.StringbreakUtil;
 import com.longi.dap.tookits.UtilJson;
-import message.oa.messageoapush.CxfClient;
 import org.springframework.stereotype.Service;
+
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import com.longi.dap.entity.Shipments;
-import com.longi.dap.dao.ShipmentsMapper;
 
 /**
  * @author jiangsida
@@ -133,10 +131,10 @@ public class ShipmentsServiceImpl implements ShipmentsService {
             String areName=(String)wipList.get(i).get("area");
             sbArea.append("\""+areName+"\",");
             if (value>l2){
-                CxfClient.cl1("[L2"+areName+"alarm]西安组件工厂包装区超过L2报警线，实际值"+value+"，报警线"+l2,peopelName);
+               // CxfClient.cl1("[L2"+areName+"alarm]西安组件工厂包装区超过L2报警线，实际值"+value+"，报警线"+l2,peopelName);
             }
             else if (value<l2&&value>l1){
-                CxfClient.cl1("[L1"+areName+"alarm]西安组件工厂包装区超过L1报警线，实际值"+value+"，报警线"+l1,peopelName);
+              //  CxfClient.cl1("[L1"+areName+"alarm]西安组件工厂包装区超过L1报警线，实际值"+value+"，报警线"+l1,peopelName);
               }
 
 

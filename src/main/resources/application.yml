@@ -1,5 +1,7 @@
 server:
   port: 8761
+logging:
+  config: classpath:logback-spring.xml  #指定配置文件
 
 eureka:
   instance:
@@ -11,20 +13,12 @@ eureka:
       defaultZone: http://${eureka.instance.hostname}:${server.port}/eureka/
 
 spring:
+  profiles:
+    active: dev
+  freemarker:
+    prefer-file-system-access: true
   application:
     name: eurka-server
-  datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    url: jdbc:mysql://10.0.10.98:3306/vaas?serverTimezone=GMT&useUnicode=true&characterEncoding=UTF-8&autoReconnect=true&useSSL=false
-    username: root
-    password: root
-    type: org.apache.commons.dbcp.BasicDataSource
-  devtools:
-    restart:
-      enabled: true
-      additional-paths: src/main/java
-  thymeleaf:
-    cache: false
 
 mybatis:
   type-aliases-package: com.longi.dap.entity

@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 
 /**
  * @ClassName Shipments
- * @Description TODO
+ * @Description
  * @Author jiangsida
  * @VERSION 1.0
  **/

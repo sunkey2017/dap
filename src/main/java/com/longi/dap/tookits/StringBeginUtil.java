@@ -2,7 +2,7 @@ package com.longi.dap.tookits;
 
 /**
  * @ClassName StringBeginUtil
- * @Description TODO
+ * @Description
  * @Author jiangsida
  * @VERSION 1.0
  **/

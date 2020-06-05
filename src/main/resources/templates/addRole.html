@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5"
+>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet" href="./css/detail.css">
+    <script type="text/javascript" src="js/common.js"></script>
+    <title>新增角色</title>
+</head>
+<body>
+<div class="main-head">
+    <span onclick="toPage('main')" style="cursor: pointer">
+    <img src="images/logo.png" class="main-img">
+    <span class="main-span">智能组件系统</span>
+    </span>
+    <div class="main-head-user">
+        <img src="images/user.png" width="30" height="30" style="margin: 15px 0px; cursor: pointer;"
+             id="head-user-img">
+        <div id="head-menu" style="display: none;">
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('personal')">个人中心</p>
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('changePwd')">修改密码</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('user')">用户管理</p>
+            <p  sec:authorize="hasRole('ROLE_ADMIN')"   style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;" onclick="toPage('role')">角色管理</p>
+
+            <p style="height: 40px;margin:0px; line-height: 40px; text-align: center; cursor: pointer;"
+               onclick="toPage('logout')">退出登录</p>
+            <span id="top"></span>
+        </div>
+        <p class="main-head-user-txt" th:text="${session?.username}" id="headUser" style="display: none"></p>
+        <p class="main-head-user-txt" id="head-realName"></p>
+    </div>
+</div>
+
+<div style="min-height: 600px; overflow: auto;">
+    <!--内容部分-->
+    <div style="margin:0 auto; width: 50%; border: 1px solid #e3e3e3; padding: 10px;">
+        <div class="personal-header">添加角色</div>
+        <form action="" method="post" name='info' id='form'>
+            <div class="personal-div"><label><span style="color: #CC281C">*</span>角色编码：</label> <input
+                    type="text" class="personal-input" name="roleCode" id="roleCode" required placeholder="请以ROLE_开头"></div>
+            <div id="roleCode-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >角色编码不能为空</span></div>
+            <div id="roleCode-error2" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >角色编码必须以ROLE开通请重新输入</span></div>
+            <div class="personal-div"><label><span style="color: #CC281C">*</span>角色名称：</label>
+                <input type="text"
+                       class="personal-input"
+                       name="roleName"
+                       id="roleName"
+                       required>
+            </div>
+            <div id="roleName-error" style="display: none;text-align: center;"><span style="font-size:12px; color: #CC281C;" >角色名称不能为空</span></div>
+            <div class="personal-div"><label>角色说明：</label>
+                <input type="text" class="personal-input" name="description" id="description"></div>
+
+            <div class="personal-div" style="margin-bottom: 0px;">
+                <button class="personal-submit" type="button" name='submit' id="role-submit">提交</button>
+                <button class="personal-submit" type="button" name='submit' onclick="toPage('role')">取消</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<p class="copy-right-main">CopyRight©2020&nbsp;Longi&nbsp; By 隆基股份 </p>
+<script data-main="js/addRole" src="js/require.js"></script>
+
+</body>
+</html>
